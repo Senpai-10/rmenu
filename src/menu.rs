@@ -36,8 +36,6 @@ impl Menu {
             self.display_list();
             self.handle_input();
         }
-
-        endwin();
     }
 
     fn list_up(&mut self) {
@@ -58,7 +56,7 @@ impl Menu {
             's' | 'j' => self.list_down(),
             '\n' => self.done(),
             // ' ' => self.select(),
-            'q' => self.quit = true,
+            'q' => self.exit(),
             _ => {}
         }
     }
@@ -87,9 +85,14 @@ impl Menu {
         }
     }
 
-    fn done(&self) {
+    fn done(&mut self) {
         // TODO if self.selected is empty output self.list[self.cursor]
         // TODO if self.selected is not empty iter the list and output self.list[selected[i]]
+        self.exit();
+
+        if self.selected.is_empty() {
+            println!("{}", self.list[self.cursor]);
+        }
     }
 
     fn select(&mut self) {
@@ -97,5 +100,10 @@ impl Menu {
         // TODO save current cursor position (index)
         // TODO if already selected remove from self.selected
         self.selected.push(self.cursor);
+    }
+
+    fn exit(&mut self) {
+        self.quit = true;
+        endwin();
     }
 }
