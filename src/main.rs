@@ -12,6 +12,6 @@ use menu::Menu;
 fn main() {
     let list = vec![String::from("yes"), String::from("no")];
 
-    let menu = Menu::new(list);
+    let mut menu = Menu::new(list);
     menu.start();
 }
