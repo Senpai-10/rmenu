@@ -5,6 +5,13 @@ TODO use stdin
 
 */
 
+mod menu;
+
+use menu::Menu;
+
 fn main() {
-    println!("Hello, world!");
+    let list = vec![String::from("yes"), String::from("no")];
+
+    let menu = Menu::new(list);
+    menu.start();
 }
