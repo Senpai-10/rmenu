@@ -2,7 +2,7 @@ use ncurses::*;
 
 pub struct Menu {
     list: Vec<String>,
-    choices: Vec<String>,
+    selected: Vec<usize>,
 
     /// Cursor position in list using index
     cursor: usize,
@@ -13,7 +13,7 @@ impl Menu {
     pub fn new(list: Vec<String>) -> Menu {
         Menu {
             list: list,
-            choices: Vec::new(),
+            selected: Vec::new(),
             cursor: 0,
             quit: false,
         }
@@ -70,11 +70,12 @@ impl Menu {
     }
 
     fn done(&self) {
-        // TODO if self.choices is empty output self.list[self.cursor]
-        // TODO if self.choices is not empty iter the list and output self.list[choices[i]]
+        // TODO if self.selected is empty output self.list[self.cursor]
+        // TODO if self.selected is not empty iter the list and output self.list[selected[i]]
     }
 
     fn select(&self) {
         // TODO save current cursor position (index)
+        // TODO if already selected remove from self.selected
     }
 }
