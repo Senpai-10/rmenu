@@ -10,15 +10,21 @@ pub struct Menu {
     /// Cursor position in list using index
     cursor: usize,
     quit: bool,
+    settings: Settings,
+}
+
+pub struct Settings {
+    pub multi_select: bool,
 }
 
 impl Menu {
-    pub fn new(list: Vec<String>) -> Menu {
+    pub fn new(list: Vec<String>, settings: Settings) -> Menu {
         Menu {
             list: list,
             selected: Vec::new(),
             cursor: 0,
             quit: false,
+            settings: settings,
         }
     }
 
