@@ -93,6 +93,7 @@ impl Menu {
     }
 
     fn done(&mut self) {
+        // Exiting ncurses window to be able to show print output
         self.exit();
 
         if self.selected.is_empty() {
