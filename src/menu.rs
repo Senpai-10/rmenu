@@ -93,8 +93,6 @@ impl Menu {
     }
 
     fn done(&mut self) {
-        // TODO if self.selected is empty output self.list[self.cursor]
-        // TODO if self.selected is not empty iter the list and output self.list[selected[i]]
         self.exit();
 
         if self.selected.is_empty() {
