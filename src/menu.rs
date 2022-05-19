@@ -114,6 +114,10 @@ impl Menu {
     }
 
     fn select(&mut self) {
+        if !self.settings.multi_select {
+            return ();
+        }
+
         let element_index = self.cursor;
 
         if self.selected.contains(&element_index) {
@@ -135,6 +139,10 @@ impl Menu {
 
     /// Add all self.list elements in self.selected
     fn select_all(&mut self) {
+        if !self.settings.multi_select {
+            return ();
+        }
+
         for (i, _) in self.list.iter().enumerate() {
             self.selected.push(i);
         }
@@ -142,6 +150,10 @@ impl Menu {
 
     /// Empty self.selected
     fn unselect_all(&mut self) {
+        if !self.settings.multi_select {
+            return ();
+        }
+
         self.selected.clear();
     }
 
