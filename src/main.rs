@@ -29,7 +29,7 @@ fn main() {
 #[clap(author, version, about, long_about = None)]
 struct Args {
     /// List of menu items
-    #[clap(short = 'l', long)]
+    #[clap(short = 'l', long, multiple_occurrences = true, min_values = 2)]
     list: Vec<String>,
 
     /// Prompt for yes or no.
