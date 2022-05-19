@@ -56,6 +56,8 @@ impl Menu {
             's' | 'j' => self.list_down(),
             '\n' => self.done(),
             ' ' => self.select(),
+            'a' => self.select_all(),
+            'A' => self.unselect_all(),
             'q' => self.exit(),
             _ => {}
         }
@@ -118,6 +120,18 @@ impl Menu {
         } else {
             self.selected.push(element_index);
         }
+    }
+
+    /// Add all self.list elements in self.selected
+    fn select_all(&mut self) {
+        for (i, _) in self.list.iter().enumerate() {
+            self.selected.push(i);
+        }
+    }
+
+    /// Empty self.selected
+    fn unselect_all(&mut self) {
+        self.selected.clear();
     }
 
     // Return the last index in self.selected Vector, without overflow
