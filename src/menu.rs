@@ -85,11 +85,6 @@ impl Menu {
                 attr_off(COLOR_PAIR(pair));
             }
         }
-
-        // mv(6, 0);
-        // addstr(&format!("cursor: {}", self.cursor));
-        // mv(7, 0);
-        // addstr(&format!("selected: {:?}", self.selected));
     }
 
     fn done(&mut self) {
