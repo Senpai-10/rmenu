@@ -55,7 +55,7 @@ impl Menu {
             'w' | 'k' => self.list_up(),
             's' | 'j' => self.list_down(),
             '\n' => self.done(),
-            // ' ' => self.select(),
+            ' ' => self.select(),
             'q' => self.exit(),
             _ => {}
         }
@@ -64,7 +64,7 @@ impl Menu {
     fn display_list(&self) {
         for (index, item) in self.list.iter().enumerate() {
             let pair = {
-                if self.cursor == index {
+                if self.selected.contains(&index) {
                     SELECTED_PAIR
                 } else {
                     REGULAR_PAIR
@@ -83,6 +83,11 @@ impl Menu {
                 attr_off(COLOR_PAIR(pair));
             }
         }
+
+        // mv(6, 0);
+        // addstr(&format!("cursor: {}", self.cursor));
+        // mv(7, 0);
+        // addstr(&format!("selected: {:?}", self.selected));
     }
 
     fn done(&mut self) {
@@ -96,10 +101,32 @@ impl Menu {
     }
 
     fn select(&mut self) {
-        todo!();
-        // TODO save current cursor position (index)
-        // TODO if already selected remove from self.selected
-        self.selected.push(self.cursor);
+        let element_index = self.cursor;
+
+        if self.selected.contains(&element_index) {
+            // Find index for element {self.cursor}
+            let index = self
+                .selected
+                .iter()
+                .position(|x| *x == self.cursor)
+                .unwrap();
+            mv(5, 0);
+            addstr(&format!("remove index: {}", index));
+            refresh();
+
+            self.selected.remove(index);
+        } else {
+            self.selected.push(element_index);
+        }
+    }
+
+    // Return the last index in self.selected Vector, without overflow
+    fn last_index(&self) -> usize {
+        if self.selected.len() == 0 {
+            return 0;
+        } else {
+            return self.selected.len() - 1;
+        }
     }
 
     fn exit(&mut self) {
