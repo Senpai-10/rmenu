@@ -55,7 +55,9 @@ impl Menu {
             'w' | 'k' => self.list_up(),
             's' | 'j' => self.list_down(),
             '\n' => self.done(),
-            // ' ' => self.select(),
+            ' ' => self.select(),
+            'a' => self.select_all(),
+            'A' => self.unselect_all(),
             'q' => self.exit(),
             _ => {}
         }
@@ -64,7 +66,7 @@ impl Menu {
     fn display_list(&self) {
         for (index, item) in self.list.iter().enumerate() {
             let pair = {
-                if self.cursor == index {
+                if self.selected.contains(&index) {
                     SELECTED_PAIR
                 } else {
                     REGULAR_PAIR
@@ -86,20 +88,62 @@ impl Menu {
     }
 
     fn done(&mut self) {
-        // TODO if self.selected is empty output self.list[self.cursor]
-        // TODO if self.selected is not empty iter the list and output self.list[selected[i]]
+        // Exiting ncurses window to be able to show print output
         self.exit();
 
         if self.selected.is_empty() {
             println!("{}", self.list[self.cursor]);
+        } else {
+            // Output is ordered by what has been selected first
+
+            // Uncomment this code to sort output by index number
+            // self.selected.sort();
+
+            for (_, i) in self.selected.iter().enumerate() {
+                println!("{}", self.list[*i]);
+            }
         }
     }
 
     fn select(&mut self) {
-        todo!();
-        // TODO save current cursor position (index)
-        // TODO if already selected remove from self.selected
-        self.selected.push(self.cursor);
+        let element_index = self.cursor;
+
+        if self.selected.contains(&element_index) {
+            // Find index for element {self.cursor}
+            let index = self
+                .selected
+                .iter()
+                .position(|x| *x == self.cursor)
+                .unwrap();
+            mv(5, 0);
+            addstr(&format!("remove index: {}", index));
+            refresh();
+
+            self.selected.remove(index);
+        } else {
+            self.selected.push(element_index);
+        }
+    }
+
+    /// Add all self.list elements in self.selected
+    fn select_all(&mut self) {
+        for (i, _) in self.list.iter().enumerate() {
+            self.selected.push(i);
+        }
+    }
+
+    /// Empty self.selected
+    fn unselect_all(&mut self) {
+        self.selected.clear();
+    }
+
+    // Return the last index in self.selected Vector, without overflow
+    fn last_index(&self) -> usize {
+        if self.selected.len() == 0 {
+            return 0;
+        } else {
+            return self.selected.len() - 1;
+        }
     }
 
     fn exit(&mut self) {
