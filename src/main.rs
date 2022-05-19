@@ -11,6 +11,9 @@ fn main() {
     if args.confirm && args.list.is_empty() {
         list.push(String::from("yes"));
         list.push(String::from("no"));
+    } else if args.list.is_empty() && !args.confirm {
+        println!("List is empty!");
+        std::process::exit(1)
     } else {
         list = args.list;
     }
