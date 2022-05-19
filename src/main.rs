@@ -5,6 +5,7 @@ TODO use stdin
 
 */
 
+mod help;
 mod menu;
 
 use menu::Menu;

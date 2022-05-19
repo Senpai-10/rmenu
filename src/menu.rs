@@ -1,3 +1,4 @@
+use crate::help::help;
 use ncurses::*;
 
 const REGULAR_PAIR: i16 = 0;
@@ -58,6 +59,7 @@ impl Menu {
             ' ' => self.select(),
             'a' => self.select_all(),
             'A' => self.unselect_all(),
+            'h' | '?' => help(),
             'q' => self.exit(),
             _ => {}
         }
