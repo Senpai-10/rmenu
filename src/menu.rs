@@ -99,6 +99,11 @@ impl Menu {
 
         if self.selected.is_empty() {
             println!("{}", self.list[self.cursor]);
+        } else {
+            // output is ordered by what has been selected first
+            for (_, i) in self.selected.iter().enumerate() {
+                println!("{}", self.list[*i]);
+            }
         }
     }
 
