@@ -1,23 +1,43 @@
-/*
-
-TODO setup ncurses first with Vector of test items in the code
-TODO use stdin
-
-*/
-
 mod help;
 mod menu;
 
-use menu::Menu;
+use clap::Parser;
+use menu::{Menu, Settings};
 
 fn main() {
-    let list = vec![
-        String::from("1"),
-        String::from("2"),
-        String::from("3"),
-        String::from("4"),
-    ];
+    let args = Args::parse();
+    let mut list: Vec<String> = Vec::new();
 
-    let mut menu = Menu::new(list);
+    if args.confirm && args.list.is_empty() {
+        list.push(String::from("yes"));
+        list.push(String::from("no"));
+    } else {
+        list = args.list;
+    }
+
+    let mut menu = Menu::new(
+        list,
+        Settings {
+            multi_select: args.multi_select,
+        },
+    );
     menu.start();
+}
+
+/// Simple terminal select menu generator
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    /// List of menu items
+    #[clap(short = 'l', long)]
+    list: Vec<String>,
+
+    /// Prompt for yes or no.
+    /// this flag is won't work if a list is provided
+    #[clap(short = 'c', long)]
+    confirm: bool,
+
+    /// Enable multi selection
+    #[clap(short = 'm', long)]
+    multi_select: bool,
 }
